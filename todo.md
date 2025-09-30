@@ -1,5 +1,4 @@
-# To-Do Lijst: Underground Psychosis (Klanten Arena)
-
+# To-Do Lijst: Underground Psychosis 
 ## Hoofd Taken
 - [ ] Startscherm
 - [ ] Keuzes presenteren
@@ -29,8 +28,12 @@
 - [ ] Name of the game
 
 ## Options
-- [ ] Opties
-
+- [ ] GAMEPLAY
+- [ ] TAAL
+- [ ] BESTURING
+- [ ] VIDEO INSTELLINGEN
+- [ ] AUDIO INSTELLINGEN
+- [ ] OPSLAAN
 ## Turn Based Combat
 - [ ] Turn System
 - [ ] Player Input
