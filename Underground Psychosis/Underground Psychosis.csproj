@@ -15,8 +15,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="images\background.png"/>
-    <Resource Include="images\temp.jpg"/>
+    <Resource Include="images\background.png" />
+    <Resource Include="images\temp.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Levels\FirstLevel.xaml.cs">
+      <Generator>MSBuild:Compile</Generator>
+    </Compile>
   </ItemGroup>
 
 </Project>

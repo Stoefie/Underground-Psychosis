@@ -8,18 +8,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Underground_Psychosis.Levels;
 
-namespace Underground_Psychosis
+namespace Underground_Psychosis.Levels
 {
-    public partial class MainWindow : Window
+    public partial class FirstLevel : UserControl
     {
-        public MainWindow()
+        public FirstLevel()
         {
             InitializeComponent();
-
-            // Start the window in the Main Menu
-            MainContent.Content = new MainMenu();
         }
     }
 }

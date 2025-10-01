@@ -7,13 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="1080" Width="1920">
     <Grid>
-        <Grid.Background>
-            <ImageBrush Stretch="Fill" ImageSource="Images/background.png"></ImageBrush>
-        </Grid.Background>
-        <Button x:Name="StartButton" Content="Start" HorizontalAlignment="Center" VerticalAlignment="Top" Width="240" Height="60" Background="White" BorderBrush="Transparent" FontSize="24" Margin="0,492,0,0"/>
-        <Button x:Name="OptionsButton" Content="Options"  HorizontalAlignment="Center" Margin="0,591,0,0" VerticalAlignment="Top" Width="240"
-        Height="60" Background="White" BorderBrush="transparent" FontSize="24"/>
-        <Button x:Name="ExitButton" Content="Exit" HorizontalAlignment="Center" VerticalAlignment="Top" Width="240"
-        Height="60" Margin="0,694,0,0" Background="White" BorderBrush="Transparent" FontSize="24"/>
+        <ContentControl x:Name="MainContent"/>
     </Grid>
 </Window>
