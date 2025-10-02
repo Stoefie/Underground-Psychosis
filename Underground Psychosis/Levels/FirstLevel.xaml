@@ -5,11 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Underground_Psychosis"
              mc:Ignorable="d"
-             x:Name="FirstLevelRoot">
+             x:Name="FirstLevelRoot"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch">
     <Grid>
         <Grid.Background>
             <ImageBrush Stretch="Fill" ImageSource="/images/background.png"></ImageBrush>
         </Grid.Background>
-        <Canvas x:Name="GameCanvas"/>
+        <Canvas x:Name="GameCanvas"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                />
     </Grid>
 </UserControl>

@@ -15,6 +15,7 @@ namespace Underground_Psychosis.GameEngine
     {
         public Point Position { get; set; }
         public UIElement Sprite { get; set; }
+        public Rect BoundingRect { get; protected set; }
         public abstract void Update(double deltaTime);
         public virtual void Draw(Canvas canvas)
         {

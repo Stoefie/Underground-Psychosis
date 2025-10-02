@@ -31,7 +31,7 @@ namespace Underground_Psychosis.GameEngine
             CompositionTarget.Rendering -= GameLoopTick;
         }
 
-        private void GameLoopTick(object sender, EventArgs e)
+        private void GameLoopTick(object? sender, EventArgs e)
         {
             var now = DateTime.Now;
             var deltaTime = (now - _lastUpdate).TotalSeconds;

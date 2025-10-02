@@ -63,7 +63,7 @@ namespace Underground_Psychosis.GameEngine
             else if (parentWindow != null && parentWindow.Height == 720)
                 groundY = 600;
             else
-                groundY = 850;
+                groundY = 800;
 
             if (groundY == 250 && Position.Y >= 250)
             {
@@ -77,7 +77,7 @@ namespace Underground_Psychosis.GameEngine
                 velocity.Y = 0;
                 isJumping = false;
             }
-            else if(groundY == 850  && Position.Y >= 850)
+            else if(groundY == 800  && Position.Y >= 800)
             {
                 Position = new System.Windows.Point(Position.X, groundY);
                 velocity.Y = 0;
