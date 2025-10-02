@@ -4,12 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Underground_Psychosis"
-             mc:Ignorable="d" 
-             d:DesignHeight="1080" d:DesignWidth="1920">
+             mc:Ignorable="d"
+             x:Name="FirstLevelRoot">
     <Grid>
         <Grid.Background>
             <ImageBrush Stretch="Fill" ImageSource="/images/background.png"></ImageBrush>
         </Grid.Background>
-        <ContentControl x:Name="MainContent" />
+        <Canvas x:Name="GameCanvas"/>
     </Grid>
 </UserControl>

@@ -31,8 +31,11 @@ namespace Underground_Psychosis.Levels
 
         public void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            //Load the first level on clicking the start button
-            MainContent.Content = new FirstLevel();
+            Window parentWindow = Window.GetWindow(this);
+            if (parentWindow is MainWindow mainWindow)
+            {
+            mainWindow.MainContent.Content = new FirstLevel();
+            }
         }
         public void OptionsButton_Click(object sender, RoutedEventArgs e)
         {
