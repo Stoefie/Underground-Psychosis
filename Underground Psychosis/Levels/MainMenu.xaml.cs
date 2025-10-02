@@ -34,14 +34,14 @@ namespace Underground_Psychosis.Levels
             //Load the first level on clicking the start button
             MainContent.Content = new FirstLevel();
         }
-
-        // redirect can be added for new 'options' page.
         public void OptionsButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Options clicked!");
-
+            Window parentWindow = Window.GetWindow(this);
+            if (parentWindow is MainWindow mainWindow)
+            {
+            mainWindow.MainContent.Content = new Options();
+            }
         }
-
         public void ExitButton_Click(object sender, RoutedEventArgs e)
         {
             //Close the game by pressing exit
