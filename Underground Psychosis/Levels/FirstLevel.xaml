@@ -13,6 +13,7 @@
             <ImageBrush Stretch="Fill" ImageSource="/images/background.png"></ImageBrush>
         </Grid.Background>
         <Canvas x:Name="GameCanvas"
+                Background="Transparent"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 />

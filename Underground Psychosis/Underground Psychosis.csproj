@@ -12,12 +12,18 @@
   <ItemGroup>
     <None Remove="images\background.png" />
     <None Remove="images\CharacterOne.png" />
+    <None Remove="images\CharacterTwopng.png" />
     <None Remove="images\temp.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Collections" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="images\background.png" />
     <Resource Include="images\CharacterOne.png" />
+    <Resource Include="images\CharacterTwopng.png" />
     <Resource Include="images\temp.jpg" />
   </ItemGroup>
 

@@ -22,6 +22,14 @@ namespace Underground_Psychosis.GameEngine
 
         public void AddEntity(Entity entity) => _entities.Add(entity);
 
+        public void RemoveEntity(Entity entity)
+        {
+            _entities.Remove(entity);
+            if (entity.Sprite != null && _canvas.Children.Contains(entity.Sprite))
+                _canvas.Children.Remove(entity.Sprite);
+        }
+
+
         public void Start()
         {
             CompositionTarget.Rendering += GameLoopTick;
@@ -39,8 +47,20 @@ namespace Underground_Psychosis.GameEngine
 
             foreach(var entity in _entities)
                 entity.Update(deltaTime);
+
+            ResolvePlayerTileCollisions();
+
             foreach(var entity in _entities)
                 entity.Draw(_canvas);
+        }
+
+        private void ResolvePlayerTileCollisions()
+        {
+            var tiles = _entities.OfType<Tile>().Where(t => t.IsSolid).ToList();
+            foreach (var player in _entities.OfType<Player>())
+            {
+                player.ResolveCollisions(tiles);
+            }
         }
     }
 }

@@ -16,8 +16,25 @@ namespace Underground_Psychosis.GameEngine
         private double gravity = 600;
         private double speed = 300;
         private bool isJumping = false;
-        private System.Windows.Vector velocity;
-        private double groundY = 900;
+        public bool IsJumping
+        {
+            get => isJumping;
+            private set => isJumping = value;
+        }
+
+        private Vector velocity;
+        public Vector Velocity
+        {
+            get => velocity;
+            set => velocity = value;
+        }
+
+        public double Width => (Sprite as Rectangle)?.Width ?? 32;
+        public double Height => (Sprite as Rectangle)?.Height ?? 32;
+
+        // Facing direction for sprite swapping
+        private bool _facingRight = true;
+        private readonly ScaleTransform _flip = new ScaleTransform(1, 1);
 
         public Player()
         {
@@ -31,31 +48,122 @@ namespace Underground_Psychosis.GameEngine
             else if (parentWindow != null && parentWindow.Height == 720)
                 Sprite = new Rectangle { Width = 38, Height = 88, Fill = imageBrushPlayerOne };
             else
-            {
                 Sprite = new Rectangle { Width = 57, Height = 136, Fill = imageBrushPlayerOne };
-            }
+
+            Sprite.RenderTransformOrigin = new Point (0.5, 0.5);
+            Sprite.RenderTransform = _flip;
+
+            BoundingRect = new Rect(Position.X, Position.Y, Width, Height);
         }
 
         public override void Update(double deltaTime)
         {
-            velocity.Y += gravity * deltaTime;
-
+            // Movement for left and right
             if(Keyboard.IsKeyDown(Key.A))
                 velocity.X = -speed;
+                
             else if(Keyboard.IsKeyDown(Key.D))
                 velocity.X = speed;
             else
                 velocity.X = 0;
 
+            // Flipping sprite based on direction
+            if (velocity.X < 0 && _facingRight)
+            {
+                _facingRight = false;
+                _flip.ScaleX = -1;
+            }
+            else if (velocity.X > 0  && !_facingRight)
+            {
+                _facingRight = true;
+                _flip.ScaleX = 1;
+            }
+
+            // Jumping movemement
             if(Keyboard.IsKeyDown(Key.Space) && !isJumping)
             {
-                velocity.Y = -300;
+                velocity.Y = -450;
                 isJumping = true;
             }
 
-            Position = new System.Windows.Point(Position.X + velocity.X * deltaTime, Position.Y + velocity.Y * deltaTime);
+            // System for gravity
+            velocity.Y += gravity * deltaTime;
 
-            //Check if on the ground
+            // Intergrate movement into position checks
+            Position = new Point(
+                Position.X + velocity.X * deltaTime,
+                Position.Y + velocity.Y * deltaTime);
+
+            //Updating the bounds check
+            BoundingRect = new Rect(Position.X, Position.Y, Width, Height);
+        }
+
+        public void ResolveCollisions(IEnumerable<Tile> solidTiles)
+        {
+            foreach (var tile in solidTiles)
+            {
+                if (!tile.IsSolid)
+                    continue;
+                
+                if (!BoundingRect.IntersectsWith(tile.BoundingRect))
+                    continue;
+
+                // Calculate whether it overlaps
+
+                double playerLeft = BoundingRect.Left;
+                double playerRight = BoundingRect.Right;
+                double playerTop = BoundingRect.Top;
+                double playerBottom = BoundingRect.Bottom;
+
+                double tileLeft = tile.BoundingRect.Left;
+                double tileRight = tile.BoundingRect.Right;
+                double tileTop = tile.BoundingRect.Top;
+                double tileBottom = tile.BoundingRect.Bottom;
+
+                double overlapX = Math.Min(playerRight - tileLeft, tileRight - playerLeft);
+                double overlapY = Math.Min(playerBottom - tileTop, tileBottom - playerTop);
+
+                // Resolve on the shallow axis
+                if (overlapX < overlapY)
+                {
+                    // Horizontal resolution
+                    if (playerRight > tileLeft && playerLeft < tileLeft) // Coming from left
+                    {
+                        Position = new Point(Position.X - overlapX, Position.Y);
+                    }
+                    else
+                    {
+                        Position = new Point(Position.X + overlapX, Position.Y);
+                    }
+                    velocity.X = 0;
+                }
+                else
+                {
+                    // Vertical resolution
+                    if(playerBottom > tileTop && playerTop < tileTop) // Falling onto tile
+                    {
+                        Position = new Point(Position.X, Position.Y - overlapY);
+                        velocity.Y = 0;
+                        isJumping = false;
+                    }
+                    else // Hitting head against tile
+                    {
+                        Position = new Point(Position.X, Position.Y + overlapY);
+                        velocity.Y = 0;
+                    }
+                }
+
+                // Update bounds after adjustment
+                BoundingRect = new Rect(Position.X, Position.Y, Width, Height);
+            }
+        }
+    }
+}
+
+
+
+
+        /*
             
             var parentWindow = Application.Current.MainWindow;
             if (parentWindow != null && parentWindow.Height == 360)
@@ -81,8 +189,5 @@ namespace Underground_Psychosis.GameEngine
             {
                 Position = new System.Windows.Point(Position.X, groundY);
                 velocity.Y = 0;
-                isJumping = false;
-            }
-        }
-    }
-}
+                isJumping = false; */
+

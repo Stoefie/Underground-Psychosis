@@ -15,14 +15,15 @@ namespace Underground_Psychosis.GameEngine
     {
         public Point Position { get; set; }
         public UIElement Sprite { get; set; }
-        public Rect BoundingRect { get; protected set; }
+        public Rect BoundingRect { get; set; }
         public abstract void Update(double deltaTime);
         public virtual void Draw(Canvas canvas)
         {
-            Canvas.SetLeft(Sprite, Position.X);
-            Canvas.SetTop(Sprite, Position.Y);
+            if (Sprite == null) return;
             if (!canvas.Children.Contains(Sprite))
                 canvas.Children.Add(Sprite);
+            Canvas.SetLeft(Sprite, Position.X);
+            Canvas.SetTop(Sprite, Position.Y);
         }
     }
 }

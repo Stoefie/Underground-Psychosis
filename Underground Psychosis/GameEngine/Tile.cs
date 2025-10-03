@@ -17,24 +17,26 @@ namespace Underground_Psychosis.GameEngine
         public double Width { get; }
         public double Height { get; }
         public bool IsSolid { get; }
+        public int Kind { get; }
 
-        public Tile(int x, int y, double width, double height, bool isSolid)
+        public Tile(int x, int y, double width, double height, bool isSolid, int kind, Brush fill)
         {
             Width = width;
             Height = height;
             IsSolid = isSolid;
-
+            Kind = kind;
             
             Sprite = new Rectangle
             {
                 Width = width,
                 Height = height,
-                Fill = isSolid ? Brushes.Green : Brushes.Transparent
+                Fill = fill
             };
 
 
         Position = new Point(x * width, y * height);
         BoundingRect = new Rect(Position.X, Position.Y, width, height);
+
         }
         public override void Update(double deltaTime)
         {
