@@ -29,7 +29,7 @@ namespace Underground_Psychosis.GameEngine
                         Width = width,
                         Height = height,
                         Stretch = Stretch.Fill,
-                        Source = new BitmapImage(new Uri("pack://application:,,,/images/CharacterOne.png"))
+                        Source = new BitmapImage(new Uri("pack://application:,,,/images/stone.png"))
                     };
                     return img;
                 }

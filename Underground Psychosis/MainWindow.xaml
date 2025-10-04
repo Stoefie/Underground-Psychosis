@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="1080" Width="1920">
     <Grid>
-        <ContentControl x:Name="MainContent" Margin="1,0,1,0" Height="1080"/>
+        <ContentControl x:Name="MainContent" Margin="0,0,0,0" UseLayoutRounding="True" SnapsToDevicePixels="True"/>
     </Grid>
 </Window>

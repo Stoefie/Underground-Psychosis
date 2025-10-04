@@ -5,17 +5,20 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Underground_Psychosis"
              mc:Ignorable="d"
-             x:Name="FirstLevelRoot"
-             HorizontalAlignment="Stretch"
-             VerticalAlignment="Stretch">
-    <Grid>
-        <Grid.Background>
-            <ImageBrush Stretch="Fill" ImageSource="/images/background.png"></ImageBrush>
-        </Grid.Background>
-        <Canvas x:Name="GameCanvas"
+             x:Name="FirstLevelRoot">
+    <Grid Background="Black">
+        <Viewbox Stretch="UniformToFill" StretchDirection="Both">
+            <Grid Width="1920" Height="1080">
+                <Grid.Background>
+                    <ImageBrush ImageSource="/images/background.png"
+                      Stretch="Fill"
+                      RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                </Grid.Background>
+                <Canvas x:Name="GameCanvas"
+                Width="1920" Height="1080"
                 Background="Transparent"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                />
+                RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+            </Grid>
+        </Viewbox>
     </Grid>
 </UserControl>
