@@ -22,8 +22,8 @@ namespace Underground_Psychosis.Levels
 
         private int[,] levelMap =
         {
+            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
             {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-            {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
             {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
             {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
             {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -103,6 +103,7 @@ namespace Underground_Psychosis.Levels
 
             GameCanvas.MouseMove += (s, me) => _editor.OnMouseMove(me.GetPosition(GameCanvas));
             GameCanvas.MouseDown += (s, me) => _editor.OnMouseDown(me.GetPosition(GameCanvas), me.ChangedButton);
+            GameCanvas.MouseUp += (s, me) => _editor.OnMouseUp(me.ChangedButton);
             KeyDown += FirstLevel_KeyDown;
 
             _game.Start();
@@ -167,7 +168,7 @@ namespace Underground_Psychosis.Levels
                    if (code == 0) continue;
                    if (_tileEntities.ContainsKey((x, y))) continue;
 
-                   var tile = new Tile(x, y, _tileWidth, _tileHeight, isSolid: true, kind: code, fill: code == 1 ? Brushes.Green : Brushes.Orange);
+                   var tile = new Tile(x, y, _tileWidth, _tileHeight, isSolid: true, kind: code);
                     _tileEntities[(x, y)] = tile;
                     _game.AddEntity(tile);
                 }
