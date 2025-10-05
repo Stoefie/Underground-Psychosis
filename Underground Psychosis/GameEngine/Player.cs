@@ -13,15 +13,19 @@ namespace Underground_Psychosis.GameEngine
 {
     public class Player : Entity
     {
+        // Movement base values
         private double gravity = 600;
         private double speed = 300;
         private bool isJumping = false;
+
+        // Jumping state
         public bool IsJumping
         {
             get => isJumping;
             private set => isJumping = value;
         }
 
+        // Velocity (Speed for movement)
         private Vector velocity;
         public Vector Velocity
         {
@@ -35,6 +39,21 @@ namespace Underground_Psychosis.GameEngine
         // Facing direction for sprite swapping
         private bool _facingRight = true;
         private readonly ScaleTransform _flip = new ScaleTransform(1, 1);
+
+        // Dash parameters 
+        private double dashSpeed = 1200;
+        private double dashDuration = 0.25;
+        private double dashCooldown = 0.40;
+        private bool allowVerticalMomentumDuringDash = false;
+        private bool cancelDashOnHorizontalCollision = true;
+
+        // Dash state
+        private bool _isDashing;
+        private double _dashTimeRemaining;
+        private double _dashCooldownRemaining;
+        private bool _dashUsedThisAirtime;
+
+        public bool IsDashing => _isDashing;
 
         public Player()
         {
@@ -58,6 +77,32 @@ namespace Underground_Psychosis.GameEngine
 
         public override void Update(double deltaTime)
         {
+            // Cooldown for dash
+            if (_dashCooldownRemaining > 0)
+                _dashCooldownRemaining -= deltaTime;
+            if (_isDashing)
+            {
+                _dashTimeRemaining -= deltaTime;
+                if (_dashTimeRemaining <= 0)
+                    EndDash();
+            }
+
+            // Dash start (Shift while airborne)
+            if (!_isDashing && isJumping && !_dashUsedThisAirtime && _dashCooldownRemaining <= 0 && (Keyboard.IsKeyDown(Key.LeftShift) | Keyboard.IsKeyDown(Key.RightShift)))
+            {
+                StartDash();
+            }
+
+            if (!_isDashing)
+            {
+                if (Keyboard.IsKeyDown(Key.A))
+                    velocity.X = -speed;
+                else if(Keyboard.IsKeyDown(Key.D))
+                    velocity.X = speed;
+                else
+                    velocity.X = 0;
+
+            /*
             // Movement for left and right
             if(Keyboard.IsKeyDown(Key.A))
                 velocity.X = -speed;
@@ -66,17 +111,20 @@ namespace Underground_Psychosis.GameEngine
                 velocity.X = speed;
             else
                 velocity.X = 0;
+            */
 
-            // Flipping sprite based on direction
-            if (velocity.X < 0 && _facingRight)
-            {
-                _facingRight = false;
-                _flip.ScaleX = -1;
-            }
-            else if (velocity.X > 0  && !_facingRight)
-            {
-                _facingRight = true;
-                _flip.ScaleX = 1;
+
+                // Flipping sprite based on direction
+                if (velocity.X < 0 && _facingRight)
+                {
+                    _facingRight = false;
+                    _flip.ScaleX = -1;
+                }
+                else if (velocity.X > 0  && !_facingRight)
+                {
+                    _facingRight = true;
+                    _flip.ScaleX = 1;
+                }
             }
 
             // Jumping movemement
@@ -87,8 +135,14 @@ namespace Underground_Psychosis.GameEngine
             }
 
             // System for gravity
-            velocity.Y += gravity * deltaTime;
-
+            if (!_isDashing || allowVerticalMomentumDuringDash)
+            {
+                velocity.Y += gravity * deltaTime;
+            }
+            else
+            {
+                velocity.Y = 0;
+            }
             // Intergrate movement into position checks
             Position = new Point(
                 Position.X + velocity.X * deltaTime,
@@ -98,6 +152,30 @@ namespace Underground_Psychosis.GameEngine
             BoundingRect = new Rect(Position.X, Position.Y, Width, Height);
         }
 
+        private void StartDash()
+        {
+            _isDashing = true;
+            _dashTimeRemaining = dashDuration;
+            _dashCooldownRemaining = dashCooldown;
+            _dashUsedThisAirtime = true;
+
+            int dir = _facingRight ? 1 : -1;
+            if (velocity.X != 0)
+                dir = Math.Sign(velocity.X);
+
+            velocity.X = dir * dashSpeed;
+
+            if (!allowVerticalMomentumDuringDash)
+                velocity.Y = 0;
+        }
+
+        private void EndDash()
+        {
+            _isDashing = false;
+            // Optionally keep some carry-over horizontal speed, or clamp:
+            if (Math.Abs(velocity.X) > speed)
+                velocity.X = Math.Sign(velocity.X) * speed;
+        }
         public void ResolveCollisions(IEnumerable<Tile> solidTiles)
         {
             foreach (var tile in solidTiles)
@@ -136,6 +214,9 @@ namespace Underground_Psychosis.GameEngine
                         Position = new Point(Position.X + overlapX, Position.Y);
                     }
                     velocity.X = 0;
+
+                    if (_isDashing && cancelDashOnHorizontalCollision)
+                        EndDash();
                 }
                 else
                 {
@@ -145,6 +226,10 @@ namespace Underground_Psychosis.GameEngine
                         Position = new Point(Position.X, Position.Y - overlapY);
                         velocity.Y = 0;
                         isJumping = false;
+
+                        // Reset dash
+                        _dashUsedThisAirtime = false;
+                        if (_isDashing) EndDash();
                     }
                     else // Hitting head against tile
                     {

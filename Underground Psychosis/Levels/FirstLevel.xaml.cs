@@ -107,8 +107,8 @@ namespace Underground_Psychosis.Levels
                 levelMap,
                 _tileEntities,
                 () => _tileWidth,
-                () => _tileHeight
-            );
+                () => _tileHeight,
+                "FirstLevel");
 
             GameCanvas.MouseMove += (s, me) => _editor.OnMouseMove(me.GetPosition(GameCanvas));
             GameCanvas.MouseDown += (s, me) => _editor.OnMouseDown(me.GetPosition(GameCanvas), me.ChangedButton);

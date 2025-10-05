@@ -14,52 +14,65 @@ namespace Underground_Psychosis.GameEngine
             switch (kind)
             {
                 case 1: // Solid green block
-                {
-                    return new Rectangle
                     {
-                        Width = width,
-                        Height = height,
-                        Fill = Brushes.Green
-                    };
-                }
-                case 2: //Image based tile
-                {
-                    var img = new Image
+                        return new Rectangle
+                        {
+                            Width = width,
+                            Height = height,
+                            Fill = Brushes.Green
+                        };
+                    }
+                case 2: //Stone
                     {
-                        Width = width,
-                        Height = height,
-                        Stretch = Stretch.Fill,
-                        Source = new BitmapImage(new Uri("pack://application:,,,/images/stone.png"))
-                    };
-                    return img;
-                }
-                case 3: //Red
-                {
-                    return new Rectangle
+                        var img = new Image
+                        {
+                            Width = width,
+                            Height = height,
+                            Stretch = Stretch.Fill,
+                            Source = new BitmapImage(new Uri("pack://application:,,,/images/stone.png"))
+                        };
+                        return img;
+                    }
+                case 3: //Wood
                     {
-                        Width = width,
-                        Height = height,
-                        Fill = Brushes.Red
-                    };
-                }
-                case 4: //Blue
-                {
-                    return new Rectangle
+                        var img = new Image
+                        {
+                            Width = width,
+                            Height = height,
+                            Stretch = Stretch.Fill,
+                            Source = new BitmapImage(new Uri("pack://application:,,,/images/wood.png"))
+                        };
+                        return img;
+                    }
+                case 4: //Log
                     {
-                        Width = width,
-                        Height = height,
-                        Fill = Brushes.Blue
-                    };
-                }
+                        var img = new Image
+                        {
+                            Width = width,
+                            Height = height,
+                            Stretch = Stretch.Fill,
+                            Source = new BitmapImage(new Uri("pack://application:,,,/images/log.png"))
+                        };
+                        return img;
+                    }
+                case 9: //Purple border
+                    {
+                        return new Rectangle
+                        {
+                            Width = width,
+                            Height = height,
+                            Fill = Brushes.Purple
+                        };
+                    }
                 default: // Fallback
-                {
-                    return new Rectangle
                     {
-                        Width = width,
-                        Height = height,
-                        Fill = Brushes.Gray
-                    };
-                }
+                        return new Rectangle
+                        {
+                            Width = width,
+                            Height = height,
+                            Fill = Brushes.Gray
+                        };
+                    }
             }
         }
     }

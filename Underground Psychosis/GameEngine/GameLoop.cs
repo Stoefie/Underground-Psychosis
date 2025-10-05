@@ -39,6 +39,8 @@ namespace Underground_Psychosis.GameEngine
             CompositionTarget.Rendering -= GameLoopTick;
         }
 
+        public event Action? Tick;
+
         private void GameLoopTick(object? sender, EventArgs e)
         {
             var now = DateTime.Now;
@@ -52,6 +54,8 @@ namespace Underground_Psychosis.GameEngine
 
             foreach(var entity in _entities)
                 entity.Draw(_canvas);
+
+            Tick?.Invoke();
         }
 
         private void ResolvePlayerTileCollisions()
