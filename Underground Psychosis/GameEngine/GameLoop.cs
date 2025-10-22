@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Media;
-using System.Windows.Controls;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Underground_Psychosis.GameEngine
 {
@@ -12,23 +10,31 @@ namespace Underground_Psychosis.GameEngine
     {
         private readonly Canvas _canvas;
         private readonly List<Entity> _entities = new();
+        private readonly List<Entity> _pendingAdds = new();
+        private readonly List<Entity> _pendingRemoves = new();
         private DateTime _lastUpdate;
-        
-        public GameLoop (Canvas canvas)
+
+        public GameLoop(Canvas canvas)
         {
             _canvas = canvas;
             _lastUpdate = DateTime.Now;
         }
 
-        public void AddEntity(Entity entity) => _entities.Add(entity);
-
-        public void RemoveEntity(Entity entity)
+        // Deferred add: queue entity to be added at a safe point
+        public void AddEntity(Entity entity)
         {
-            _entities.Remove(entity);
-            if (entity.Sprite != null && _canvas.Children.Contains(entity.Sprite))
-                _canvas.Children.Remove(entity.Sprite);
+            if (entity == null) return;
+            if (!_pendingAdds.Contains(entity) && !_entities.Contains(entity))
+                _pendingAdds.Add(entity);
         }
 
+        // Deferred remove: queue entity to be removed at a safe point
+        public void RemoveEntity(Entity entity)
+        {
+            if (entity == null) return;
+            if (!_pendingRemoves.Contains(entity))
+                _pendingRemoves.Add(entity);
+        }
 
         public void Start()
         {
@@ -47,21 +53,55 @@ namespace Underground_Psychosis.GameEngine
             var deltaTime = (now - _lastUpdate).TotalSeconds;
             _lastUpdate = now;
 
-            foreach(var entity in _entities)
+            // Use a stable snapshot for Update so updates can't invalidate the enumerator
+            var updateSnapshot = _entities.ToList();
+            foreach (var entity in updateSnapshot)
                 entity.Update(deltaTime);
 
             ResolvePlayerTileCollisions();
 
-            foreach(var entity in _entities)
+            // Apply pending changes after Update and collision resolution so Draw sees current state
+            ApplyPendingChanges();
+
+            // Draw from a snapshot to avoid modifications during draw
+            var drawSnapshot = _entities.ToList();
+            foreach (var entity in drawSnapshot)
                 entity.Draw(_canvas);
 
+            // Apply any changes that occurred during Draw (unlikely, but safe)
+            ApplyPendingChanges();
+
             Tick?.Invoke();
+        }
+
+        private void ApplyPendingChanges()
+        {
+            if (_pendingRemoves.Count > 0)
+            {
+                foreach (var e in _pendingRemoves)
+                {
+                    _entities.Remove(e);
+                    if (e.Sprite != null && _canvas.Children.Contains(e.Sprite))
+                        _canvas.Children.Remove(e.Sprite);
+                }
+                _pendingRemoves.Clear();
+            }
+
+            if (_pendingAdds.Count > 0)
+            {
+                _entities.AddRange(_pendingAdds);
+                _pendingAdds.Clear();
+            }
         }
 
         private void ResolvePlayerTileCollisions()
         {
             var tiles = _entities.OfType<Tile>().Where(t => t.IsSolid).ToList();
             foreach (var player in _entities.OfType<Player>())
+            {
+                player.ResolveCollisions(tiles);
+            }
+            foreach (var player in _entities.OfType<PlayerTwo>())
             {
                 player.ResolveCollisions(tiles);
             }

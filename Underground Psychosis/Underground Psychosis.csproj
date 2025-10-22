@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <None Remove="images\background.png" />
+    <None Remove="images\CharacterNick.png" />
     <None Remove="images\CharacterOne.png" />
     <None Remove="images\CharacterTwopng.png" />
     <None Remove="images\log.png" />
@@ -25,6 +26,7 @@
 
   <ItemGroup>
     <Resource Include="images\background.png" />
+    <Resource Include="images\CharacterNick.png" />
     <Resource Include="images\CharacterOne.png" />
     <Resource Include="images\CharacterTwopng.png" />
     <Resource Include="images\log.png" />

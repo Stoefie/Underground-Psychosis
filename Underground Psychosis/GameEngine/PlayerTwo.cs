@@ -11,7 +11,7 @@ using System.Windows.Shapes;
 
 namespace Underground_Psychosis.GameEngine
 {
-    public class Player : Entity
+    public class PlayerTwo : Entity
     {
         // Movement base values
         private double gravity = 600;
@@ -55,19 +55,19 @@ namespace Underground_Psychosis.GameEngine
 
         public bool IsDashing => _isDashing;
 
-        public Player()
+        public PlayerTwo()
         {
-            var imageBrushPlayerOne = new ImageBrush
+            var imageBrushPlayerTwo = new ImageBrush
             {
-                ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/CharacterOne.png"))
+                ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/CharacterNick.png"))
             };
             var parentWindow = Application.Current.MainWindow;
             if (parentWindow != null && parentWindow.Height == 360)
-                Sprite = new Rectangle { Width = 19, Height = 44, Fill = imageBrushPlayerOne };
+                Sprite = new Rectangle { Width = 19, Height = 44, Fill = imageBrushPlayerTwo };
             else if (parentWindow != null && parentWindow.Height == 720)
-                Sprite = new Rectangle { Width = 38, Height = 88, Fill = imageBrushPlayerOne };
+                Sprite = new Rectangle { Width = 38, Height = 88, Fill = imageBrushPlayerTwo };
             else
-                Sprite = new Rectangle { Width = 57, Height = 136, Fill = imageBrushPlayerOne };
+                Sprite = new Rectangle { Width = 57, Height = 136, Fill = imageBrushPlayerTwo };
 
             Sprite.RenderTransformOrigin = new Point (0.5, 0.5);
             Sprite.RenderTransform = _flip;
@@ -88,16 +88,16 @@ namespace Underground_Psychosis.GameEngine
             }
 
             // Dash start (Shift while airborne)
-            if (!_isDashing && isJumping && !_dashUsedThisAirtime && _dashCooldownRemaining <= 0 && (Keyboard.IsKeyDown(Key.LeftShift)))
+            if (!_isDashing && isJumping && !_dashUsedThisAirtime && _dashCooldownRemaining <= 0 && (Keyboard.IsKeyDown(Key.RightShift)))
             {
                 StartDash();
             }
 
             if (!_isDashing)
             {
-                if (Keyboard.IsKeyDown(Key.A))
+                if (Keyboard.IsKeyDown(Key.Left))
                     velocity.X = -speed;
-                else if(Keyboard.IsKeyDown(Key.D))
+                else if(Keyboard.IsKeyDown(Key.Right))
                     velocity.X = speed;
                 else
                     velocity.X = 0;
@@ -128,7 +128,7 @@ namespace Underground_Psychosis.GameEngine
             }
 
             // Jumping movemement
-            if(Keyboard.IsKeyDown(Key.Space) && !isJumping)
+            if(Keyboard.IsKeyDown(Key.Up) && !isJumping)
             {
                 velocity.Y = -450;
                 isJumping = true;
@@ -188,24 +188,24 @@ namespace Underground_Psychosis.GameEngine
 
                 // Calculate whether it overlaps
 
-                double playerLeft = BoundingRect.Left;
-                double playerRight = BoundingRect.Right;
-                double playerTop = BoundingRect.Top;
-                double playerBottom = BoundingRect.Bottom;
+                double playerTwoLeft = BoundingRect.Left;
+                double playerTwoRight = BoundingRect.Right;
+                double playerTwoTop = BoundingRect.Top;
+                double playerTwoBottom = BoundingRect.Bottom;
 
                 double tileLeft = tile.BoundingRect.Left;
                 double tileRight = tile.BoundingRect.Right;
                 double tileTop = tile.BoundingRect.Top;
                 double tileBottom = tile.BoundingRect.Bottom;
 
-                double overlapX = Math.Min(playerRight - tileLeft, tileRight - playerLeft);
-                double overlapY = Math.Min(playerBottom - tileTop, tileBottom - playerTop);
+                double overlapX = Math.Min(playerTwoRight - tileLeft, tileRight - playerTwoLeft);
+                double overlapY = Math.Min(playerTwoBottom - tileTop, tileBottom - playerTwoTop);
 
                 // Resolve on the shallow axis
                 if (overlapX < overlapY)
                 {
                     // Horizontal resolution
-                    if (playerRight > tileLeft && playerLeft < tileLeft) // Coming from left
+                    if (playerTwoRight > tileLeft && playerTwoLeft < tileLeft) // Coming from left
                     {
                         Position = new Point(Position.X - overlapX, Position.Y);
                     }
@@ -221,7 +221,7 @@ namespace Underground_Psychosis.GameEngine
                 else
                 {
                     // Vertical resolution
-                    if(playerBottom > tileTop && playerTop < tileTop) // Falling onto tile
+                    if(playerTwoBottom > tileTop && playerTwoTop < tileTop) // Falling onto tile
                     {
                         Position = new Point(Position.X, Position.Y - overlapY);
                         velocity.Y = 0;
