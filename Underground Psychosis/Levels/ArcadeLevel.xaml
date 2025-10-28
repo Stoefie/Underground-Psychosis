@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="Underground_Psychosis.Levels.ArcadeLevel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Underground_Psychosis"
+             mc:Ignorable="d"
+             x:Name="ArcadeLevelRoot">
+    <Grid Background="Black">
+        <ScrollViewer x:Name="ArcadeLevelScrollViewer"
+                      HorizontalScrollBarVisibility="Hidden"
+                      VerticalScrollBarVisibility="Hidden"
+                      Focusable="false">
+            <Canvas x:Name="GameCanvas"
+                        Background="Transparent"
+                        RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

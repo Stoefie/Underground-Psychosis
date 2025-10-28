@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace Underground_Psychosis.Levels
 {
-    /// <summary>
-    /// Interaction logic for MainMenu.xaml
-    /// </summary>
     public partial class MainMenu : UserControl
     {
         public MainMenu()
@@ -27,24 +24,39 @@ namespace Underground_Psychosis.Levels
             StartButton.Click += StartButton_Click;
             OptionsButton.Click += OptionsButton_Click;
             ExitButton.Click += ExitButton_Click;
+            ArcadeButton.Click += ArcadeButton_Click;
         }
 
         public void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            //Load the first level on clicking the start button
-            MainContent.Content = new FirstLevel();
+            // Load the first level
+            Window parentWindow = Window.GetWindow(this);
+            if (parentWindow is MainWindow mainWindow)
+            {
+            mainWindow.MainContent.Content = new FirstLevel();
+            }
         }
         public void OptionsButton_Click(object sender, RoutedEventArgs e)
         {
+            // Open the options window section
             Window parentWindow = Window.GetWindow(this);
             if (parentWindow is MainWindow mainWindow)
             {
             mainWindow.MainContent.Content = new Options();
             }
         }
+        public void ArcadeButton_Click(object sender, RoutedEventArgs e)
+        {
+            //Arcade mode for highscore based gameplay
+            Window parentWindow = Window.GetWindow(this);
+            if (parentWindow is MainWindow mainWindow)
+            {
+            mainWindow.MainContent.Content = new ArcadeLevel();
+            }
+        }
         public void ExitButton_Click(object sender, RoutedEventArgs e)
         {
-            //Close the game by pressing exit
+            // Close the game by pressing exit
             Window parentWindow = Window.GetWindow(this);
             if (parentWindow != null)
             {
