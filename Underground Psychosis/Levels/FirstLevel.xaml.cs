@@ -28,6 +28,8 @@ namespace Underground_Psychosis.Levels
         private bool _p1OnGoal;
         private bool _p2OnGoal;
 
+        private TextBlock _debugPositions;
+
         private int[,] levelMap =
         {
             { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,4,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2 },
@@ -39,8 +41,8 @@ namespace Underground_Psychosis.Levels
             { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2 },
             { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,4,4,4,4,4,4 },
             { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,2 },
-            { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,0,0,0,0,0,0,2,2,0,0,0,0,0,2 },
-            { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,2,0,0,0,0,0,2 },
+            { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2 },
+            { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2 },
             { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2 },
             { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,0,5,5,5,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2 },
             { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,5,5,5,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2 },
@@ -51,24 +53,16 @@ namespace Underground_Psychosis.Levels
             { 2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2 },
             { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2 },
             { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2 },
-            { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2 },
-            { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,6,6,0,0,0,0,0,0,2 },
-            { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,4,4,4,4,4,4 },
-            { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,0,0,0,0,2 },
-            { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,0,0,0,0,2 },
-            { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,0,0,0,0,2 },
-            { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,0,0,0,0,2 },
-            { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,0,0,0,0,2 },
-            { 2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,0,0,0,0,2 },
-            { 2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,0,0,0,0,2 },
-            { 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,2 },
-            { 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,2 },
+            { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
             { 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 },
         };
 
         private double _tileWidth;
         private double _tileHeight;
         private bool _tilesLoaded;
+
+        private InventoryControl? _p1Inventory;
+        private InventoryControl? _p2Inventory;
 
         /*
         public FirstLevel()
@@ -145,13 +139,80 @@ namespace Underground_Psychosis.Levels
             Canvas.SetZIndex(_levelCompleteOverlay, 2000);
             _levelCompleteOverlay.Visibility = Visibility.Collapsed;
 
+            _debugPositions = new TextBlock
+            {
+                Foreground = Brushes.Yellow,
+                Background = new SolidColorBrush(Color.FromArgb(120, 0, 0, 0)),
+                Padding = new Thickness(6),
+                FontSize = 12
+            };
+            GameCanvas.Children.Add(_debugPositions);
+            Canvas.SetZIndex(_debugPositions, 6000);
+            Canvas.SetLeft(_debugPositions, 10);
+            Canvas.SetTop(_debugPositions, 10);
+
             _game.Tick += GameTick;
 
             _game.Start();
+
+            // --- add after starting the game ---
+            // create inventories, attach to players and register toggle keys
+            _p1Inventory = new InventoryControl { Visibility = Visibility.Collapsed };
+            _p2Inventory = new InventoryControl { Visibility = Visibility.Collapsed };
+
+            GameCanvas.Children.Add(_p1Inventory);
+            GameCanvas.Children.Add(_p2Inventory);
+
+            // ensure inventories draw above game entities / overlays
+            Canvas.SetZIndex(_p1Inventory, 5000);
+            Canvas.SetZIndex(_p2Inventory, 5000);
+
+            // force initial measure/arrange so ActualWidth/ActualHeight are valid for Follow's initial placement
+            _p1Inventory.UpdateLayout();
+            _p2Inventory.UpdateLayout();
+
+            // make inventories follow players (raise verticalOffset so inventory appears higher above player)
+            _p1Inventory.Follow(_player, GameCanvas, verticalOffset: 80.0, smoothFactor: 8.0);
+            _p2Inventory.Follow(_playerTwo, GameCanvas, verticalOffset: 40.0, smoothFactor: 8.0);
+
+            // register toggle keys on the level window (I for player1, O for player2)
+            _p1Inventory.RegisterToggleKey(Window.GetWindow(this) ?? Application.Current.MainWindow, Key.I);
+            _p2Inventory.RegisterToggleKey(Window.GetWindow(this) ?? Application.Current.MainWindow, Key.O);
+
+            // optionally seed items for testing (example)
+            try
+            {
+                var potionImg = new BitmapImage();
+                potionImg.BeginInit();
+                potionImg.UriSource = new System.Uri("pack://application:,,,/images/HealthPotion.png", System.UriKind.Absolute);
+                potionImg.EndInit();
+                _p1Inventory.AddItem("Health Potion", potionImg);
+                _p2Inventory.AddItem("Health Potion", potionImg);
+            }
+            catch { }
+
+            // --- end additions ---
         }
 
         private void FirstLevel_KeyDown(object sender, KeyEventArgs e)
         {
+            // toggle player 1 inventory with I
+            if (e.Key == Key.I && _p1Inventory != null)
+            {
+                _p1Inventory.Visibility = _p1Inventory.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+                e.Handled = true;
+                return;
+            }
+
+            // toggle player 2 inventory with O
+            if (e.Key == Key.O && _p2Inventory != null)
+            {
+                _p2Inventory.Visibility = _p2Inventory.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+                e.Handled = true;
+                return;
+            }
+
+            
             if (e.Key == Key.F2)
             {
                 _editor.Enabled = !_editor.Enabled;
@@ -180,7 +241,7 @@ namespace Underground_Psychosis.Levels
             LoadLevel(levelMap);
             _tilesLoaded = true;
 
-            // ensure overlay sizing after tiles load
+            
             UpdateOverlaySize();
             UpdateFinishStatusPosition();
         }
@@ -408,10 +469,10 @@ namespace Underground_Psychosis.Levels
                         _tiles.Remove(coord);
                         return;
                     }
-                    // otherwise continue to next queued target
+                    
                 }
 
-                // nothing to remove: no-op
+                
             }
         }
 
@@ -420,6 +481,14 @@ namespace Underground_Psychosis.Levels
         private void GameTick()
         {
             UpdateGoalStatus();
+
+            if (_debugPositions != null)
+            {
+                var p1Pos = _player?.Position ?? new Point(double.NaN, double.NaN);
+                var p2Pos = _playerTwo?.Position ?? new Point(double.NaN, double.NaN);
+                _debugPositions.Text =
+                    $"P1: X={p1Pos.X:0.0}, Y={p1Pos.Y:0.0}\nP2: X={p2Pos.X:0.0}, Y={p2Pos.Y:0.0}";
+            }
         }
 
         private void UpdateGoalStatus()
