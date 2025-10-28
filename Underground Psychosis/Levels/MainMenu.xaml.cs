@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Underground_Psychosis.Managers;
 
 namespace Underground_Psychosis.Levels
 {
@@ -25,6 +26,8 @@ namespace Underground_Psychosis.Levels
             OptionsButton.Click += OptionsButton_Click;
             ExitButton.Click += ExitButton_Click;
             ArcadeButton.Click += ArcadeButton_Click;
+            HighScoreLabel.Text = "High Score: " + HighScoreManager.GetHighScore();
+
         }
 
         public void StartButton_Click(object sender, RoutedEventArgs e)

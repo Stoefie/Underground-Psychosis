@@ -37,7 +37,16 @@
         <Viewbox Grid.Row="4" Grid.Column="1" Stretch="Uniform">
             <Button x:Name="ExitButton" Content="Exit" Margin="1,1,1,1" Width="22" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="White" BorderBrush="transparent" FontSize="2" BorderThickness="0,0,0,0"/>
         </Viewbox>
+        <Viewbox Grid.Row="5" Grid.Column="1" Stretch="Uniform">
+            <TextBlock x:Name="HighScoreLabel"
+                       Text="High Score: 0"
+                       Foreground="White"
+                       FontSize="3"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+        </Viewbox>
 
         <ContentControl x:Name="MainContent"/>
+
     </Grid>
 </UserControl>

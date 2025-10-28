@@ -20,5 +20,14 @@
                 RenderOptions.BitmapScalingMode="NearestNeighbor"/>
             </Grid>
         </Viewbox>
+        <TextBlock x:Name="HighScoreLabel"
+                   Text="High Score: 0"
+                   Foreground="Yellow"
+                   FontSize="24"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Top"
+                   Margin="10"/>
     </Grid>
+    
 </UserControl>
