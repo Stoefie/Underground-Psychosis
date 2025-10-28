@@ -1,13 +1,7 @@
-﻿using System.Text;
+﻿using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Underground_Psychosis.Levels;
 
 namespace Underground_Psychosis
@@ -18,8 +12,29 @@ namespace Underground_Psychosis
         {
             InitializeComponent();
 
-            // Start the window in the Main Menu
             MainContent.Content = new MainMenu();
+
+            
+            try
+            {
+                var potionImg = new BitmapImage(new Uri("pack://application:,,,/images/potion.png", UriKind.Absolute));
+                InventoryCtrl.AddItem("Health Potion", potionImg);
+            }
+            catch
+            {
+               
+            }
+        }
+
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.I)
+            {
+                InventoryCtrl.Visibility = InventoryCtrl.Visibility == Visibility.Visible
+                    ? Visibility.Collapsed
+                    : Visibility.Visible;
+                e.Handled = true;
+            }
         }
     }
 }

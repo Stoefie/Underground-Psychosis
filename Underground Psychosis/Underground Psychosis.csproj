@@ -33,6 +33,7 @@
     <Resource Include="images\stone.png" />
     <Resource Include="images\temp.jpg" />
     <Resource Include="images\wood.png" />
+    <Resource Include="images\HealthPotion.png" />
   </ItemGroup>
 
   <ItemGroup>
