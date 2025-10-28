@@ -10,10 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="images\back.png" />
+    <None Remove="images\back2.png" />
     <None Remove="images\background.png" />
     <None Remove="images\CharacterNick.png" />
     <None Remove="images\CharacterOne.png" />
     <None Remove="images\CharacterTwopng.png" />
+    <None Remove="images\greenboard.png" />
     <None Remove="images\log.png" />
     <None Remove="images\stone.png" />
     <None Remove="images\temp.jpg" />
@@ -25,10 +28,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="images\back.png" />
+    <Resource Include="images\back2.png" />
     <Resource Include="images\background.png" />
     <Resource Include="images\CharacterNick.png" />
     <Resource Include="images\CharacterOne.png" />
     <Resource Include="images\CharacterTwopng.png" />
+    <Resource Include="images\greenboard.png" />
     <Resource Include="images\log.png" />
     <Resource Include="images\stone.png" />
     <Resource Include="images\temp.jpg" />

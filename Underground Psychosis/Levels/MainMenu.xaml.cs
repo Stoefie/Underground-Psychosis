@@ -25,6 +25,7 @@ namespace Underground_Psychosis.Levels
             OptionsButton.Click += OptionsButton_Click;
             ExitButton.Click += ExitButton_Click;
             ArcadeButton.Click += ArcadeButton_Click;
+            HowToButton.Click += HowToButton_Click;
         }
 
         public void StartButton_Click(object sender, RoutedEventArgs e)
@@ -54,6 +55,17 @@ namespace Underground_Psychosis.Levels
             mainWindow.MainContent.Content = new ArcadeLevel();
             }
         }
+        
+        // Opens the 'How to play' menu
+        public void HowToButton_Click(object sender, RoutedEventArgs e)
+        {
+            Window parentWindow = Window.GetWindow(this);
+            if (parentWindow is MainWindow mainWindow)
+            {
+                mainWindow.MainContent.Content = new HowTo();
+            }
+        }
+        
         public void ExitButton_Click(object sender, RoutedEventArgs e)
         {
             // Close the game by pressing exit
@@ -63,5 +75,7 @@ namespace Underground_Psychosis.Levels
                 parentWindow.Close();
             }
         }
+
+
     }
 }
