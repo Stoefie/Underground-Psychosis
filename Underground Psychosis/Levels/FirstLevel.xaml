@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Underground_Psychosis"
+             xmlns:ui="clr-namespace:Underground_Psychosis.GameEngine"
              mc:Ignorable="d"
              x:Name="FirstLevelRoot">
     <Grid Background="Black">
@@ -20,5 +21,6 @@
                 RenderOptions.BitmapScalingMode="NearestNeighbor"/>
             </Grid>
         </Viewbox>
+        <ui:GameUI x:Name="HUD"/>
     </Grid>
 </UserControl>
