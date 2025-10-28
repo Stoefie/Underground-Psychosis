@@ -1,21 +1,21 @@
 <UserControl x:Class="Underground_Psychosis.InventoryControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             Width="240" Height="174">
+             Width="320" Height="320">
     <Border Background="#DD222222" Padding="8" CornerRadius="6">
         <ItemsControl ItemsSource="{Binding Slots}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <!-- 3 columns, 2 rows -->
-                    <UniformGrid Columns="3" Rows="2" />
+                    <UniformGrid Columns="3" Rows="3" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
 
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Border Width="72" Height="72" Margin="4" Background="#FF2B2B2B" CornerRadius="4"
-                            ToolTip="{Binding Item.Name}">
+                    <Border Width="96" Height="96" Margin="6" Background="#FF2B2B2B" CornerRadius="4"
+                  ToolTip="{Binding Item.Name}">
                         <Grid>
+                            <!-- Image shows nothing when null (empty slot) -->
                             <Image Source="{Binding Item.Icon}" Stretch="Uniform" />
                         </Grid>
                     </Border>

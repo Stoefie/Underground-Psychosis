@@ -41,12 +41,9 @@
     <Resource Include="images\heartfull.png" />
     <Resource Include="images\log.png" />
     <Resource Include="images\stone.png" />
-    <DesignDataWithDesignTimeCreatableTypes Include="images\temp.jpg" />
+    <Resource Include="images\temp.jpg" />
     <Resource Include="images\wood.png" />
     <Resource Include="images\HealthPotion.png" />
-	<Resource Include="images\Sword.png" />
-    <Resource Include="images\Bow.png" />
-    <Resource Include="images\Bier.png" />
   </ItemGroup>
 
   <ItemGroup>

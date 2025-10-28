@@ -14,18 +14,15 @@ namespace Underground_Psychosis
 
             MainContent.Content = new MainMenu();
 
+            
             try
             {
-                var potionImg = new BitmapImage();
-                potionImg.BeginInit();
-                potionImg.UriSource = new Uri("pack://application:,,,/images/HealthPotion.png", UriKind.Absolute);
-                potionImg.EndInit();
+                var potionImg = new BitmapImage(new Uri("pack://application:,,,/images/potion.png", UriKind.Absolute));
                 InventoryCtrl.AddItem("Health Potion", potionImg);
-
             }
             catch
             {
-                
+               
             }
         }
 
