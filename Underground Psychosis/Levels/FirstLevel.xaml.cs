@@ -95,10 +95,6 @@ namespace Underground_Psychosis.Levels
         public FirstLevel()
         {
             InitializeComponent();
-             if (HUD == null)
-        MessageBox.Show("HUD is null — not created!");
-    else
-        MessageBox.Show("HUD created successfully!");
             Loaded += OnLoaded;
             Focusable = true;
         }
