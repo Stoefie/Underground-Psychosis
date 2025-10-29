@@ -55,8 +55,15 @@ namespace Underground_Psychosis.GameEngine
 
         public bool IsDashing => _isDashing;
 
+        // Health and equipment
+        public int MaxHealth { get; } = 100;
+        public int Health { get; private set; }
+        public string? EquippedWeapon { get; private set; }
+
         public PlayerTwo()
         {
+            Health = MaxHealth;
+
             var imageBrushPlayerTwo = new ImageBrush
             {
                 ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/CharacterNick.png"))
@@ -176,7 +183,20 @@ namespace Underground_Psychosis.GameEngine
             if (Math.Abs(velocity.X) > speed)
                 velocity.X = Math.Sign(velocity.X) * speed;
         }
-        public void ResolveCollisions(IEnumerable<Tile> solidTiles)
+
+        // Health & equipment API
+        public void Heal(int amount)
+        {
+            if (amount <= 0) return;
+            Health = Math.Min(MaxHealth, Health + amount);
+        }
+
+        public void Equip(string? weaponName)
+        {
+            EquippedWeapon = weaponName;
+        }
+
+        public void ResolveCollisions(System.Collections.Generic.IEnumerable<Tile> solidTiles)
         {
             foreach (var tile in solidTiles)
             {

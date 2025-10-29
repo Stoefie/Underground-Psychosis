@@ -1,27 +1,38 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using Underground_Psychosis.GameEngine;
 
 namespace Underground_Psychosis
 {
-    public partial class InventoryControl : UserControl
+    public partial class InventoryControl : UserControl, INotifyPropertyChanged
     {
         public ObservableCollection<InventorySlot> Slots { get; } = new ObservableCollection<InventorySlot>();
 
-        // follow-related fields
+        // raised when a non-empty slot is clicked
+        // (item, slot) - caller may request removal or equipping via InventoryControl API
+        public event Action<InventoryItem, InventorySlot>? ItemUsed;
+
+        // follow-related fields (existing)
         private Entity? _followTarget;
         private Canvas? _hostCanvas;
         private double _verticalOffset = 8.0;
         private double _smoothFactor = 12.0; // higher = snappier
         private DateTime _lastFrame = DateTime.MinValue;
         private bool _isFollowing = false;
+
+        private string? _equippedName;
+        public string? EquippedName
+        {
+            get => _equippedName;
+            private set { _equippedName = value; OnPropertyChanged(); }
+        }
 
         public InventoryControl()
         {
@@ -44,6 +55,50 @@ namespace Underground_Psychosis
                     return;
                 }
             }
+        }
+
+        // Remove item from slot (used for consumables)
+        public void RemoveItem(InventorySlot slot)
+        {
+            if (slot == null) return;
+            slot.Item = null;
+            if (slot.IsEquipped) ClearEquipped();
+        }
+
+        // Mark a single slot as equipped (clears any other)
+        public void SetEquipped(InventorySlot slot)
+        {
+            foreach (var s in Slots)
+                s.IsEquipped = false;
+
+            if (slot != null && slot.Item != null)
+            {
+                slot.IsEquipped = true;
+                EquippedName = slot.Item.Name;
+            }
+            else
+            {
+                ClearEquipped();
+            }
+        }
+
+        public void ClearEquipped()
+        {
+            foreach (var s in Slots)
+                s.IsEquipped = false;
+            EquippedName = null;
+        }
+
+        // Click handler wired from XAML
+        private void Slot_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not Button btn) return;
+            if (btn.DataContext is not InventorySlot slot) return;
+            var item = slot.Item;
+            if (item == null) return;
+
+            // raise event so the level can decide how to handle the item (equip / consume)
+            ItemUsed?.Invoke(item, slot);
         }
 
         // Public API: follow an Entity on a Canvas. smoothFactor <=0 disables smoothing.
@@ -179,6 +234,10 @@ namespace Underground_Psychosis
             Canvas.SetLeft(this, newLeft);
             Canvas.SetTop(this, newTop);
         }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName] string? n = null) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(n));
     }
 
     public class InventorySlot : INotifyPropertyChanged
@@ -190,8 +249,15 @@ namespace Underground_Psychosis
             set { _item = value; OnPropertyChanged(); }
         }
 
+        private bool _isEquipped;
+        public bool IsEquipped
+        {
+            get => _isEquipped;
+            set { _isEquipped = value; OnPropertyChanged(); }
+        }
+
         public event PropertyChangedEventHandler? PropertyChanged;
-        void OnPropertyChanged([CallerMemberName] string? n = null) =>
+        private void OnPropertyChanged([CallerMemberName] string? n = null) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(n));
     }
 
