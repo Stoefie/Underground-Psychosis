@@ -11,6 +11,7 @@ using System.Windows.Shapes;
 using Underground_Psychosis.GameEngine;
 using System.Collections.Generic;
 using System.Linq;
+using Underground_Psychosis;
 
 namespace Underground_Psychosis.Levels
 {
@@ -190,15 +191,34 @@ namespace Underground_Psychosis.Levels
             _p1Inventory.RegisterToggleKey(Window.GetWindow(this) ?? Application.Current.MainWindow, Key.I);
             _p2Inventory.RegisterToggleKey(Window.GetWindow(this) ?? Application.Current.MainWindow, Key.O);
 
+            // subscribe to item-used events for both players
+            _p1Inventory.ItemUsed += (item, slot) => HandleP1ItemUse(item, slot);
+            _p2Inventory.ItemUsed += (item, slot) => HandleP2ItemUse(item, slot);
+
             // optionally seed items for testing (example)
             try
             {
+                // potion
                 var potionImg = new BitmapImage();
                 potionImg.BeginInit();
                 potionImg.UriSource = new System.Uri("pack://application:,,,/images/HealthPotion.png", System.UriKind.Absolute);
                 potionImg.EndInit();
                 _p1Inventory.AddItem("Health Potion", potionImg);
                 _p2Inventory.AddItem("Health Potion", potionImg);
+
+                // sword
+                var swordImg = new BitmapImage();
+                swordImg.BeginInit();
+                swordImg.UriSource = new System.Uri("pack://application:,,,/images/Sword.png", System.UriKind.Absolute);
+                swordImg.EndInit();
+                _p1Inventory.AddItem("Sword", swordImg);
+
+                // bow
+                var bowImg = new BitmapImage();
+                bowImg.BeginInit();
+                bowImg.UriSource = new System.Uri("pack://application:,,,/images/Bow.png", System.UriKind.Absolute);
+                bowImg.EndInit();
+                _p2Inventory.AddItem("Bow", bowImg);
             }
             catch { }
 
@@ -606,6 +626,84 @@ namespace Underground_Psychosis.Levels
                 left = (GameCanvas.ActualWidth / 2) - 80;
             Canvas.SetLeft(_finishStatus, Math.Max(10, left));
             Canvas.SetTop(_finishStatus, 10);
+        }
+
+        private void HandleItemUseForPlayer(Player player, InventoryControl inv, InventoryItem item, InventorySlot slot)
+        {
+            if (player == null || inv == null || item == null || slot == null) return;
+
+            if (item.Name != null && item.Name.Contains("Health", StringComparison.OrdinalIgnoreCase))
+            {
+                // consume potion: heal player and remove item
+                player.Heal(25);
+                inv.RemoveItem(slot);
+            }
+            else if (item.Name != null && (item.Name.Contains("Sword", StringComparison.OrdinalIgnoreCase) || item.Name.Contains("Bow", StringComparison.OrdinalIgnoreCase)))
+            {
+                // equip weapon: set player's equipped and mark slot equipped in inventory
+                player.Equip(item.Name);
+                inv.SetEquipped(slot);
+            }
+        }
+
+        private void HandleItemUseForPlayerTwo(PlayerTwo player, InventoryControl inv, InventoryItem item, InventorySlot slot)
+        {
+            if (player == null || inv == null || item == null || slot == null) return;
+
+            if (item.Name != null && item.Name.Contains("Health", StringComparison.OrdinalIgnoreCase))
+            {
+                player.Heal(25);
+                inv.RemoveItem(slot);
+            }
+            else if (item.Name != null && (item.Name.Contains("Sword", StringComparison.OrdinalIgnoreCase) || item.Name.Contains("Bow", StringComparison.OrdinalIgnoreCase)))
+            {
+                player.Equip(item.Name);
+                inv.SetEquipped(slot);
+            }
+        }
+
+        private void HandleP1ItemUse(InventoryItem item, InventorySlot slot)
+        {
+            if (_player == null || _p1Inventory == null) return;
+            if (item?.Name == null) return;
+
+            // Consumable: Health Potion
+            if (item.Name.IndexOf("Health", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                _player.Heal(25);           
+                _p1Inventory.RemoveItem(slot); 
+                return;
+            }
+
+            // Equipable: Sword / Bow
+            if (item.Name.IndexOf("Sword", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                item.Name.IndexOf("Bow", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                _player.Equip(item.Name); 
+                _p1Inventory.SetEquipped(slot); 
+                return;
+            }
+        }
+
+        private void HandleP2ItemUse(InventoryItem item, InventorySlot slot)
+        {
+            if (_playerTwo == null || _p2Inventory == null) return;
+            if (item?.Name == null) return;
+
+            if (item.Name.IndexOf("Health", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                _playerTwo.Heal(25);
+                _p2Inventory.RemoveItem(slot);
+                return;
+            }
+
+            if (item.Name.IndexOf("Sword", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                item.Name.IndexOf("Bow", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                _playerTwo.Equip(item.Name);
+                _p2Inventory.SetEquipped(slot);
+                return;
+            }
         }
     }
 }

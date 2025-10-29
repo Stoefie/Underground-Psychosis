@@ -3,24 +3,114 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              Width="240" Height="174">
     <Border Background="#DD222222" Padding="8" CornerRadius="6">
-        <ItemsControl ItemsSource="{Binding Slots}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <!-- 3 columns, 2 rows -->
-                    <UniformGrid Columns="3" Rows="2" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
+        <StackPanel>
 
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border Width="72" Height="72" Margin="4" Background="#FF2B2B2B" CornerRadius="4"
-                            ToolTip="{Binding Item.Name}">
-                        <Grid>
-                            <Image Source="{Binding Item.Icon}" Stretch="Uniform" />
-                        </Grid>
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+            <!-- Equipped display: shows small icon + label when an item is equipped.
+                 Collapses automatically when EquippedName is null or empty. -->
+            <StackPanel Orientation="Horizontal" Margin="4,0,4,6" VerticalAlignment="Center" x:Name="EquippedPanel">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding EquippedName}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding EquippedName}" Value="">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+
+                <!-- Icon (only the slot with IsEquipped==true becomes visible) -->
+                <ItemsControl ItemsSource="{Binding Slots}" Margin="0,0,8,0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding Item.Icon}" Width="20" Height="20" Stretch="Uniform">
+                                <Image.Style>
+                                    <Style TargetType="Image">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsEquipped}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- Text label for equipped item -->
+                <TextBlock Text="{Binding EquippedName, StringFormat=Equipped: {0}}"
+                           Foreground="White" FontWeight="Bold" VerticalAlignment="Center"
+                           TextTrimming="CharacterEllipsis" />
+            </StackPanel>
+
+            
+            <ItemsControl ItemsSource="{Binding Slots}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="3" Rows="2" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Click="Slot_Click" Padding="0" Margin="4" Background="Transparent" BorderThickness="0"
+                                ToolTip="{Binding Item.Name}">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <!-- You can add Button-specific triggers or setters here if needed -->
+                                </Style>
+                            </Button.Style>
+                            <Border Width="72" Height="72" Background="#FF2B2B2B" CornerRadius="4">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                        <Setter Property="BorderBrush" Value="Transparent"/>
+                                        <Setter Property="Effect" Value="{x:Null}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsEquipped}" Value="True">
+                                                <Setter Property="BorderThickness" Value="2"/>
+                                                <Setter Property="BorderBrush" Value="#FFDDAA44"/>
+                                                <Setter Property="Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="#AA000000" ShadowDepth="2" BlurRadius="6"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Grid>
+                                    <Image Source="{Binding Item.Icon}" Stretch="Uniform" />
+                                    <!-- placeholder when slot empty -->
+                                    <TextBlock Text="+" Foreground="#66FFFFFF" FontSize="20" FontWeight="Bold"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Item}" Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
+                            </Border>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
     </Border>
 </UserControl>

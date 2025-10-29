@@ -31,6 +31,11 @@ namespace Underground_Psychosis
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
+            // If the active content is a game level that manages its own inventories,
+            
+            if (MainContent.Content is FirstLevel)
+                return;
+
             if (e.Key == Key.I)
             {
                 InventoryCtrl.Visibility = InventoryCtrl.Visibility == Visibility.Visible
